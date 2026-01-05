@@ -1,6 +1,6 @@
 // CONFIGURAÇÃO SUPABASE
 const SUPABASE_URL = "https://ddwlsisctmjqmhbajzmj.supabase.co";
-const SUPABASE_KEY = "sb_secret_3H607T8h7O99u0F3x_JhmA_WqsJ-IE1";
+const SUPABASE_KEY = "sb_publishable_X95ZSTtfoLiKm1oUPhXIUw_eSO4Kf6P";
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 document.addEventListener("DOMContentLoaded", async () => {
