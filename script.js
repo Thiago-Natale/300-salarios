@@ -99,25 +99,25 @@ function iniciarApp(userId) {
     }
 
     function salvarComAtraso() {
-        setStatus("saving");
-        clearTimeout(timeoutSalvar);
-        timeoutSalvar = setTimeout(async () => {
-            const { error } = await _supabase.from("progresso_salarios").upsert({
-                user_id: userId, // <-- GARANTE QUE O DADO É DESTE USUÁRIO
-                nome: inputs.nome.value,
-                data_inicio: inputs.data_inicio.value,
-                salario: parseFloat(inputs.salario.value) || 0,
-                valor_guardado: parseFloat(inputs.valor_guardado.value) || 0,
-            }, { onConflict: 'user_id' }); // Atualiza se o user_id já existir
+    setStatus("saving");
+    clearTimeout(timeoutSalvar);
+    timeoutSalvar = setTimeout(async () => {
+        const { error } = await _supabase.from("progresso_salarios").upsert({
+            user_id: userId, // O id que veio da função iniciarApp
+            nome: inputs.nome.value,
+            data_inicio: inputs.data_inicio.value,
+            salario: parseFloat(inputs.salario.value) || 0,
+            valor_guardado: parseFloat(inputs.valor_guardado.value) || 0,
+        }, { onConflict: 'user_id' }); // IMPORTANTE: diz ao banco para usar o user_id como referência
 
-            if (error) {
-                console.error(error);
-                setStatus("error");
-            } else {
-                setStatus("synced");
-            }
-        }, 1000);
-    }
+        if (error) {
+            console.error("Erro Supabase:", error);
+            setStatus("error");
+        } else {
+            setStatus("synced");
+        }
+    }, 1000);
+}
 
     function atualizarInterface() {
         const salario = parseFloat(inputs.salario.value) || 0;
