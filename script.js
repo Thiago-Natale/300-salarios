@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             inputs.salario.value = data.salario || 0;
             inputs.valor_guardado.value = data.valor_guardado || 0;
             atualizarInterface();
+            console.log("Carregou dados do banco")
         }
     }
 
