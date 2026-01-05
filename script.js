@@ -23,26 +23,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // FUNÇÃO: Buscar dados do Banco
   async function carregarDadosDoBanco() {
-    // Tenta buscar o registro com ID 1
     const { data, error } = await _supabase
-      .from("progresso_salarios")
-      .select("*")
-      .eq("id", 1); // Removi o .single() para evitar o erro 406
+        .from('progresso_salarios')
+        .select('*')
+        .eq('id', 1);
 
-    // Se houver dados e o array não estiver vazio
     if (data && data.length > 0) {
-      const registro = data[0];
-      inputs.nome.value = registro.nome || "";
-      inputs.data_inicio.value = registro.data_inicio || "";
-      inputs.salario.value = registro.salario || 0;
-      inputs.valor_guardado.value = registro.valor_guardado || 0;
-      atualizarInterface();
-    } else {
-      console.log(
-        "Nenhum dado encontrado. O primeiro salvamento criará o registro."
-      );
+        const registro = data[0];
+        
+        // Preenche os campos de texto e número
+        inputs.nome.value = registro.nome || '';
+        inputs.salario.value = registro.salario || 0;
+        inputs.valor_guardado.value = registro.valor_guardado || 0;
+
+        // --- TRATAMENTO DA DATA ---
+        if (registro.data_inicio) {
+            // O split("T")[0] pega apenas a parte "2026-01-05" da string do banco
+            const dataFormatada = registro.data_inicio.split("T")[0];
+            inputs.data_inicio.value = dataFormatada;
+        }
+
+        atualizarInterface();
     }
-  }
+}
 
   // FUNÇÃO: Salvar dados no Banco (com Debounce para não sobrecarregar)
   let timeoutSalvar;
