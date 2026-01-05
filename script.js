@@ -25,37 +25,62 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function carregarDadosDoBanco() {
     // Tenta buscar o registro com ID 1
     const { data, error } = await _supabase
-        .from('progresso_salarios')
-        .select('*')
-        .eq('id', 1); // Removi o .single() para evitar o erro 406
+      .from("progresso_salarios")
+      .select("*")
+      .eq("id", 1); // Removi o .single() para evitar o erro 406
 
     // Se houver dados e o array não estiver vazio
     if (data && data.length > 0) {
-        const registro = data[0];
-        inputs.nome.value = registro.nome || '';
-        inputs.data_inicio.value = registro.data_inicio || '';
-        inputs.salario.value = registro.salario || 0;
-        inputs.valor_guardado.value = registro.valor_guardado || 0;
-        atualizarInterface();
+      const registro = data[0];
+      inputs.nome.value = registro.nome || "";
+      inputs.data_inicio.value = registro.data_inicio || "";
+      inputs.salario.value = registro.salario || 0;
+      inputs.valor_guardado.value = registro.valor_guardado || 0;
+      atualizarInterface();
     } else {
-        console.log("Nenhum dado encontrado. O primeiro salvamento criará o registro.");
+      console.log(
+        "Nenhum dado encontrado. O primeiro salvamento criará o registro."
+      );
     }
-}
+  }
 
   // FUNÇÃO: Salvar dados no Banco (com Debounce para não sobrecarregar)
   let timeoutSalvar;
+  const statusDot = document.getElementById("status-dot");
+  const statusText = document.getElementById("status-text");
+
+  function setStatus(state) {
+    statusDot.classList.remove("saving", "error");
+    if (state === "saving") {
+      statusDot.classList.add("saving");
+      statusText.innerText = "Salvando...";
+    } else if (state === "synced") {
+      statusText.innerText = "Sincronizado";
+    } else if (state === "error") {
+      statusDot.classList.add("error");
+      statusText.innerText = "Erro ao salvar";
+    }
+  }
+
   function salvarComAtraso() {
+    setStatus("saving"); // Ativa o modo "Laranja"
     clearTimeout(timeoutSalvar);
     timeoutSalvar = setTimeout(async () => {
-      await _supabase.from("progresso_salarios").upsert({
+      const { error } = await _supabase.from("progresso_salarios").upsert({
         id: 1,
         nome: inputs.nome.value,
         data_inicio: inputs.data_inicio.value,
         salario: parseFloat(inputs.salario.value) || 0,
         valor_guardado: parseFloat(inputs.valor_guardado.value) || 0,
       });
-      console.log("Sincronizado com o banco!");
-    }, 1000); // Salva 1 segundo após você parar de digitar
+
+      if (error) {
+        console.error(error);
+        setStatus("error");
+      } else {
+        setStatus("synced"); // Volta para o "Verde"
+      }
+    }, 1000);
   }
 
   function atualizarInterface() {
