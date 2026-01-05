@@ -8,6 +8,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
+    <div id="auth-container" class="auth-container">
+      <h2>300 Salários - Login</h2>
+      <input type="email" id="email" placeholder="E-mail" />
+      <input type="password" id="password" placeholder="Senha" />
+      <div class="auth-buttons">
+        <button id="btn-login">Entrar</button>
+        <button id="btn-signup">Cadastrar</button>
+      </div>
+    </div>
+
+    <div id="main-content" style="display: none">
+      <button id="btn-logout">Sair</button>
+    </div>
+
     <div class="container">
       <div id="status-container" class="status-container">
         <span id="status-dot" class="dot"></span>
