@@ -33,41 +33,69 @@
     </div>
 
     <div id="main-content" style="display: none">
-      <button id="btn-logout">Sair</button>
-    </div>
+      <div class="app-container">
+        <div class="top-bar">
+          <div id="status-container" class="status-container">
+            <span id="status-dot" class="dot"></span>
+            <span id="status-text">Sincronizado</span>
+          </div>
+          <button id="btn-logout" class="btn-logout">Sair</button>
+        </div>
 
-    <div class="container">
-      <div id="status-container" class="status-container">
-        <span id="status-dot" class="dot"></span>
-        <span id="status-text">Sincronizado</span>
+        <div class="dashboard-grid">
+          <div class="dashboard-card">
+            <span class="card-label">Progresso Atual</span>
+            <div class="progress-wrapper">
+              <span id="progresso-percentual" class="card-value">0%</span>
+              <div class="progress-bar-bg">
+                <div id="progress-bar-fill" class="progress-bar-fill"></div>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-card highlight-card">
+            <span class="card-label">Faltam para a Meta</span>
+            <span id="valor-restante" class="card-value">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="container main-card">
+          <header class="header-inputs">
+            <div class="input-group">
+              <label><i class="icon">👤</i> NOME</label>
+              <input type="text" id="nome" placeholder="Seu nome" />
+            </div>
+            <div class="input-group">
+              <label><i class="icon">📅</i> DATA DE INÍCIO</label>
+              <input type="date" id="dataInicio" />
+            </div>
+            <div class="input-group">
+              <label><i class="icon">💰</i> SALÁRIO DESEJADO</label>
+              <input type="number" id="salario" placeholder="0,00" />
+            </div>
+            <div class="input-group highlight">
+              <label><i class="icon">🎯</i> META (x300)</label>
+              <input type="text" id="metaPatrimonio" readonly />
+            </div>
+            <div class="input-group">
+              <label><i class="icon">🏦</i> VALOR GUARDADO</label>
+              <input type="number" id="valorGuardado" placeholder="0,00" />
+            </div>
+          </header>
+
+          <hr class="divider" />
+
+          <div class="grid-header">
+            <h3>Visualização dos 300 Salários</h3>
+            <p>Cada círculo representa 1 salário integral guardado.</p>
+          </div>
+          <div id="grid-bolinhas" class="grid-bolinhas"></div>
+        </div>
       </div>
-      <header class="header-inputs">
-        <div class="input-group">
-          <label>NOME</label>
-          <input type="text" id="nome" />
-        </div>
-        <div class="input-group">
-          <label>DATA DE INÍCIO</label>
-          <input type="date" id="dataInicio" />
-        </div>
-        <div class="input-group">
-          <label>SALÁRIO DESEJADO</label>
-          <input type="number" id="salario" />
-        </div>
-        <div class="input-group highlight">
-          <label>META DE PATRIMÔNIO (x300)</label>
-          <input type="text" id="metaPatrimonio" readonly />
-        </div>
-        <div class="input-group">
-          <label>VALOR GUARDADO</label>
-          <input type="number" id="valorGuardado" />
-        </div>
-      </header>
-      <div id="grid-bolinhas" class="grid-bolinhas"></div>
     </div>
+    
     <script type="module">
-    import { Auth } from './js/auth.js';
-    Auth.init();
-</script>
+      import { Auth } from "./js/auth.js";
+      Auth.init();
+    </script>
   </body>
 </html>
