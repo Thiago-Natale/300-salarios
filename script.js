@@ -33,14 +33,24 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
 // 3. VERIFICAÇÃO DE SESSÃO
 async function checkUser() {
     const { data: { user } } = await _supabase.auth.getUser();
+    
     if (user) {
+        // Se estiver logado: Esconde login e mostra o app
         authContainer.style.display = 'none';
         mainContent.style.display = 'block';
-        // Inicia a aplicação passando o ID do usuário logado
+        
+        // Remove a classe do body que centraliza (se houver) para o app rolar normalmente
+        document.body.style.display = 'block'; 
+        
         iniciarApp(user.id);
     } else {
-        authContainer.style.display = 'block';
+        // Se não estiver logado: Mostra apenas o login centralizado
+        authContainer.style.display = 'flex';
         mainContent.style.display = 'none';
+        document.body.style.display = 'flex';
+        document.body.style.alignItems = 'center';
+        document.body.style.justifyContent = 'center';
+        document.body.style.minHeight = '100vh';
     }
 }
 
@@ -144,6 +154,33 @@ function iniciarApp(userId) {
     // Carga Inicial
     carregarDadosDoBanco();
 }
+
+// Função para mostrar mensagens na tela de login
+function mostrarMensagemAuth(texto) {
+    const msgElement = document.getElementById('auth-msg');
+    msgElement.innerText = texto;
+    setTimeout(() => msgElement.innerText = '', 5000);
+}
+
+// Atualize seus botões de cadastro e login para usar essa função
+document.getElementById('btn-signup').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if (!email || !password) return mostrarMensagemAuth('Preencha todos os campos.');
+    
+    const { error } = await _supabase.auth.signUp({ email, password });
+    if (error) mostrarMensagemAuth(error.message);
+    else mostrarMensagemAuth('Sucesso! Verifique seu e-mail.');
+});
+
+document.getElementById('btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    const { error } = await _supabase.auth.signInWithPassword({ email, password });
+    if (error) mostrarMensagemAuth('Dados inválidos ou erro de conexão.');
+    else checkUser();
+});
 
 // 5. INICIALIZAÇÃO AO CARREGAR PÁGINA
 document.addEventListener("DOMContentLoaded", checkUser);

@@ -8,13 +8,27 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
-    <div id="auth-container" class="auth-container">
-      <h2>300 Salários - Login</h2>
-      <input type="email" id="email" placeholder="E-mail" />
-      <input type="password" id="password" placeholder="Senha" />
-      <div class="auth-buttons">
-        <button id="btn-login">Entrar</button>
-        <button id="btn-signup">Cadastrar</button>
+    <div id="auth-container" class="auth-overlay">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="logo-circle">300</div>
+          <h1>300 Salários</h1>
+          <p>Sua jornada começa aqui.</p>
+        </div>
+
+        <div class="auth-body">
+          <div class="input-field">
+            <label>E-mail</label>
+            <input type="email" id="email" placeholder="seu@email.com" />
+          </div>
+          <div class="input-field">
+            <label>Senha</label>
+            <input type="password" id="password" placeholder="••••••••" />
+          </div>
+          <div id="auth-msg" class="auth-msg"></div>
+          <button id="btn-login" class="btn-primary">Entrar</button>
+          <button id="btn-signup" class="btn-secondary">Criar Conta</button>
+        </div>
       </div>
     </div>
 
@@ -51,6 +65,9 @@
       </header>
       <div id="grid-bolinhas" class="grid-bolinhas"></div>
     </div>
-    <script src="script.js"></script>
+    <script type="module">
+    import { Auth } from './js/auth.js';
+    Auth.init();
+</script>
   </body>
 </html>
